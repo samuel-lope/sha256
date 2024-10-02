@@ -31,7 +31,7 @@
         }
 
         textarea {
-            width: 80%; /* Reduzindo a largura da caixa de texto */
+            width: 80%;
             height: 100px;
             margin-bottom: 10px;
             padding: 10px;
@@ -61,6 +61,22 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
+            position: relative;
+        }
+
+        .copy-button {
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .copy-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -71,6 +87,7 @@
         <br>
         <button onclick="convertToSHA256()">Converter para SHA-256</button>
         <div id="output" class="output"></div>
+        <button class="copy-button" onclick="copyToClipboard()">Copiar Resultado</button>
     </div>
 
     <script>
@@ -88,6 +105,22 @@
             const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 
             document.getElementById('output').textContent = hashHex;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').textContent;
+            if (!outputText) {
+                alert("Nenhuma hash para copiar!");
+                return;
+            }
+            
+            const tempInput = document.createElement("textarea");
+            tempInput.value = outputText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Resultado copiado para a área de transferência!");
         }
     </script>
 </body>
