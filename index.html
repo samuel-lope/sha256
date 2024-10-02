@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversor de Texto para SHA-256</title>
+    <title>Conversor de Texto para SHA-256 e Base58</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -78,19 +78,32 @@
         .copy-button:hover {
             background-color: #0056b3;
         }
+
+        .base58-output {
+            margin-top: 20px;
+            word-break: break-all;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Conversor SHA-256</h1>
+        <h1>Conversor SHA-256 e Base58</h1>
         <textarea id="textInput" placeholder="Digite ou cole o texto aqui..."></textarea>
         <br>
         <button onclick="convertToSHA256()">Converter para SHA-256</button>
         <div id="output" class="output"></div>
-        <button class="copy-button" onclick="copyToClipboard()">Copiar Resultado</button>
+        <button class="copy-button" onclick="copyToClipboard()">Copiar SHA-256</button>
+        <div id="base58Output" class="base58-output"></div>
+        <button class="copy-button" onclick="copyBase58ToClipboard()">Copiar Base58</button>
     </div>
 
     <script>
+        const base58Chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
         async function convertToSHA256() {
             const text = document.getElementById('textInput').value;
             if (text === "") {
@@ -105,6 +118,23 @@
             const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 
             document.getElementById('output').textContent = hashHex;
+
+            // Converter o hash SHA-256 para Base58
+            const base58Encoded = convertToBase58(hashArray);
+            document.getElementById('base58Output').textContent = base58Encoded;
+        }
+
+        function convertToBase58(byteArray) {
+            let value = BigInt('0x' + Array.from(byteArray).map(byte => byte.toString(16).padStart(2, '0')).join(''));
+            let output = '';
+
+            while (value > 0) {
+                const remainder = Number(value % 58n);
+                value = value / 58n;
+                output = base58Chars[remainder] + output;
+            }
+
+            return output;
         }
 
         function copyToClipboard() {
@@ -120,7 +150,23 @@
             tempInput.select();
             document.execCommand("copy");
             document.body.removeChild(tempInput);
-            alert("Resultado copiado para a área de transferência!");
+            alert("SHA-256 copiado para a área de transferência!");
+        }
+
+        function copyBase58ToClipboard() {
+            const outputText = document.getElementById('base58Output').textContent;
+            if (!outputText) {
+                alert("Nenhuma hash Base58 para copiar!");
+                return;
+            }
+            
+            const tempInput = document.createElement("textarea");
+            tempInput.value = outputText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Base58 copiado para a área de transferência!");
         }
     </script>
 </body>
