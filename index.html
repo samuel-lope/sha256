@@ -6,62 +6,72 @@
     <title>Conversor de Texto para SHA-256 e Base58</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f5f5f5;
-            flex-direction: column;
+            background-color: #121212;
+            color: #fff;
         }
 
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             max-width: 500px;
             width: 100%;
             text-align: center;
         }
 
         h1 {
+            color: #00cc88;
             margin-bottom: 20px;
+            font-size: 1.8rem;
         }
 
         textarea {
-            width: 80%;
+            width: 90%;
             height: 100px;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #2c2c2c;
+            color: #fff;
+            font-size: 1rem;
+            resize: none;
+        }
+
+        textarea::placeholder {
+            color: #888;
         }
 
         button {
-            padding: 10px 20px;
-            background-color: #28a745;
+            padding: 12px 25px;
+            margin-top: 10px;
+            background-color: #00cc88;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 1rem;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #00b37a;
         }
 
-        .output {
+        .output, .base58-output {
             margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #292929;
             word-break: break-all;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            position: relative;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         .copy-button {
@@ -69,23 +79,15 @@
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
+            border-radius: 10px;
+            padding: 10px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 1rem;
+            transition: background-color 0.3s;
         }
 
         .copy-button:hover {
             background-color: #0056b3;
-        }
-
-        .base58-output {
-            margin-top: 20px;
-            word-break: break-all;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
         }
     </style>
 </head>
@@ -93,7 +95,6 @@
     <div class="container">
         <h1>Conversor SHA-256 e Base58</h1>
         <textarea id="textInput" placeholder="Digite ou cole o texto aqui..."></textarea>
-        <br>
         <button onclick="convertToSHA256()">Converter para SHA-256</button>
         <div id="output" class="output"></div>
         <button class="copy-button" onclick="copyToClipboard()">Copiar SHA-256</button>
